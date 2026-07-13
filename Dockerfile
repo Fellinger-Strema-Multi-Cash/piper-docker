@@ -25,6 +25,7 @@ RUN apt-get update \
         python3-venv \
         python3-pip \
         python3-dev \
+        wget \
         git \
         build-essential \
         cmake \
@@ -54,7 +55,6 @@ RUN python3 -m piper.download_voices --data-dir "${DATA_DIR}" "de_DE-thorsten-hi
 RUN python3 -m piper.download_voices --data-dir "${DATA_DIR}" "en_GB-cori-high"
 RUN python3 -m piper.download_voices --data-dir "${DATA_DIR}" "it_IT-paola-medium"
 RUN python3 -m piper.download_voices --data-dir "${DATA_DIR}" "es_ES-davefx-medium"
-
 
 # Expose http port
 EXPOSE 5000

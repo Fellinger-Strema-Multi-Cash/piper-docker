@@ -50,7 +50,13 @@ docker-run-shell:
 test-speech voice="en_US-lessac-medium" text="This is a test.":
     curl --request POST \
       --header 'Content-Type: application/json' \
-      --data '{ "text": "{{ text }}", "voice": "{{ voice }}", "length_scale": 1.2 }' \
+      --data '{ \
+        "text": "{{ text }}",\
+        "voice": "{{ voice }}",\
+        "length_scale": 1.1,\
+        "noise_scale": 0.667,\
+        "length_w_scale": 0.8\
+      }' \
       --output test/test-{{ voice }}.wav \
       http://localhost:5000/synthesize
     @just convert-wav-to-mp3 test/test-{{ voice }}.wav test/test-{{ voice }}.mp3
