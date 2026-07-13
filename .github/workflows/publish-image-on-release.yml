@@ -1,0 +1,37 @@
+name: 'Build and Publish Image On Release'
+
+on:
+  release:
+    types: [ created ]
+
+jobs:
+  readenv:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ env.GITHUB_REF_NAME }}
+      description: ${{ steps.dotenv.outputs.description }}
+      repo_ref: ${{ steps.dotenv.outputs.piper_repo_ref }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.0
+        with:
+          sparse-checkout: |
+            .env
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      - name: Read .env file
+        id: dotenv
+        uses: falti/dotenv-action@v1.2.0
+        with:
+          log-variables: true
+
+  image-on-release:
+    uses: ./.github/workflows/publish-image.yml
+    needs: readenv
+    with:
+      version: ${{ needs.readenv.outputs.version }}
+      description: ${{ needs.readenv.outputs.description }}
+      repo_ref: ${{ needs.readenv.outputs.repo_ref }}
