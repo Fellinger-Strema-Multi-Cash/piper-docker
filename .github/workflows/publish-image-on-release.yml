@@ -30,6 +30,9 @@ jobs:
 
   image-on-release:
     uses: ./.github/workflows/publish-image.yml
+    permissions:
+      contents: read
+      packages: write
     needs: readenv
     with:
       version: ${{ needs.readenv.outputs.version }}
