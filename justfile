@@ -1,5 +1,7 @@
 # This justfile requires https://github.com/casey/just
 
+set shell := ["bash", "-c"]
+
 # Load environment variables from `.env` file.
 set dotenv-load
 # Fail the script if the env file is not found.
