@@ -1,12 +1,18 @@
 services:
   piper0:
     container_name: piper0
-    image: ghcr.io/fellinger-strema-multi-cash/piper:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: unless-stopped
+    environment:
+      MC_PORT: 15000
+      MC_MODEL: "en_GB-cori-high"
+      MC_ADDITIONAL_CMD_ARGS: '--sentence-silence 1.0 --length-scale 1.0 --noise-scale 0.8 --debug'
     ports:
-      - "5000:5000"
+      - "5000:15000"
     healthcheck:
-      test: ['CMD-SHELL', 'wget --output-document /dev/null http://127.0.0.1:5000/info || exit 1']
+      test: ['CMD-SHELL', 'wget --output-document /dev/null http://127.0.0.1:15000/info || exit 1']
       interval: 10s
       timeout: 10s
       retries: 20
@@ -15,9 +21,7 @@ services:
 
   piper1:
     container_name: piper1
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/fellinger-strema-multi-cash/piper:latest
     restart: unless-stopped
     ports:
       - "5001:5000"

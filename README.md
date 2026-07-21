@@ -1,11 +1,22 @@
 # piper-docker
 
+## Usage Notes
+```sh
+docker pull ghcr.io/fellinger-strema-multi-cash/piper:latest
+```
+
+### Environment variables
+
+The following environment variables control the configuration:
+
+- `MC_PORT` (optional; api port; default: `5000`)
+- `MC_MODEL` (optional; default model; default: `en_US-lessac-medium`)
+- `MC_ADDITIONAL_CMD_ARGS` (optional; additional cmd args)
 
 ## Build
 ```
 just docker-build
 ```
-
 
 ## Start
 ```
