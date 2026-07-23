@@ -9,6 +9,9 @@ set dotenv-required
 
 project_dir := justfile_directory()
 
+# read latest release version
+piper_latest_release := `git ls-remote --tags --refs https://github.com/OHF-voice/piper1-gpl.git | cut -d/ -f3- | sort -V | tail -n1`
+
 # print available targets
 [group("project-agnostic")]
 default:
@@ -28,12 +31,23 @@ system-info:
 
 # create "ui" docker image
 [group("docker")]
-docker-build piper_repo_ref=env('PIPER_REPO_REF') *args='':
-    @echo "Creating docker image ..."
+docker-build piper_repo_ref=env('PIPER_REPO_REF', piper_latest_release) *args='':
+    @echo "Creating docker image with PIPER_REPO_REF={{piper_repo_ref}} ..."
     @docker build {{args}} \
         --label "local" \
         --build-arg PIPER_REPO_REF={{piper_repo_ref}} \
-        --tag "multicash/piper-local" .
+        --tag "multicash/piper-local:{{piper_repo_ref}}" .
+
+# build directly into tar file without storing in local docker engine
+[group("docker")]
+docker-create piper_repo_ref=env('PIPER_REPO_REF', piper_latest_release) output_file=("piper-local-" + piper_repo_ref + ".tar"):
+    @echo "Building and exporting directly to {{output_file}} ..."
+    @docker buildx build \
+        --label "local" \
+        --build-arg PIPER_REPO_REF={{piper_repo_ref}} \
+        --output type=docker,dest={{output_file}} \
+        --tag "multicash/piper-local:{{piper_repo_ref}}" .
+    @echo "Image saved successfully as {{output_file}}!"
 
 # run shell in docker container
 [group("docker")]
