@@ -26,9 +26,12 @@ ENV PIP_BREAK_SYSTEM_PACKAGES=1
 ENV DATA_DIR=/root/.piper
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="${VIRTUAL_ENV}/bin:$PATH"
-ENV MC_PORT="${MC_PORT}:-5000"
-ENV MC_MODEL="${MC_MODEL}:-en_US-lessac-medium"
-ENV MC_ADDITIONAL_CMD_ARGS="${MC_ADDITIONAL_CMD_ARGS}:-"
+ENV MC_PORT="${MC_PORT:-5000}"
+ENV MC_MODEL="${MC_MODEL:-en_US-lessac-medium}"
+ENV MC_ADDITIONAL_CMD_ARGS="${MC_ADDITIONAL_CMD_ARGS:-}"
+
+# Expose http port
+EXPOSE ${MC_PORT}
 
 RUN apt-get update \
     && apt-get install --quiet --no-install-recommends --no-install-suggests --yes \
