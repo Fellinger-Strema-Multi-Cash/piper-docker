@@ -40,9 +40,20 @@ docker-build piper_repo_ref=env('PIPER_REPO_REF', piper_latest_release) *args=''
 
 # build directly into tar file without storing in local docker engine
 [group("docker")]
-docker-create piper_repo_ref=env('PIPER_REPO_REF', piper_latest_release) output_file=("piper-local-" + piper_repo_ref + ".tar"):
+docker-create piper_repo_ref=env('PIPER_REPO_REF', piper_latest_release) output_file=("piper-windows-" + piper_repo_ref + ".tar"):
     @echo "Building and exporting directly to {{output_file}} ..."
     @docker buildx build \
+        --label "local" \
+        --build-arg PIPER_REPO_REF={{piper_repo_ref}} \
+        --output type=docker,dest={{output_file}} \
+        --tag "multicash/piper-local:{{piper_repo_ref}}" .
+    @echo "Image saved successfully as {{output_file}}!"
+
+[group("docker")]
+docker-create-arm64 piper_repo_ref=env('PIPER_REPO_REF', piper_latest_release) output_file=("piper-raspberry-" + piper_repo_ref + ".tar"):
+    @echo "Building and exporting directly to {{output_file}} ..."
+    @docker buildx build \
+        --platform linux/arm64 \
         --label "local" \
         --build-arg PIPER_REPO_REF={{piper_repo_ref}} \
         --output type=docker,dest={{output_file}} \
