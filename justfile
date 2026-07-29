@@ -24,7 +24,7 @@ system-info:
     @echo "os: {{os()}}"
     @echo "os family: {{os_family()}}"
 
-# create "ui" docker image
+# create docker image
 [group("docker")]
 docker-build piper_repo_ref=env('PIPER_REPO_REF') *args='':
     @echo "Creating docker image ..."
@@ -33,17 +33,18 @@ docker-build piper_repo_ref=env('PIPER_REPO_REF') *args='':
         --build-arg PIPER_REPO_REF={{piper_repo_ref}} \
         --tag "multicash/piper-local" .
 
-# run shell in docker container
+# run container
 [group("docker")]
-docker-run:
-    @docker run --rm --publish 5000:5000 multicash/piper-local 
-
+docker-run port="5000":
+    @docker run --rm --publish {{port}}:{{port}} \
+        --env MC_PORT={{port}} \
+        --env MC_ADDITIONAL_CMD_ARGS="--debug" \
+        multicash/piper-local
 
 # run shell in docker container
 [group("docker")]
 docker-run-shell:
     @docker run --rm --entrypoint="/bin/bash" -it multicash/piper-local
-
 
 # text to speech
 [group("development")]

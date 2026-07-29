@@ -22,13 +22,16 @@ ARG MC_PORT
 ARG MC_MODEL
 ARG MC_ADDITIONAL_CMD_ARGS
 
+LABEL maintainer="${MAINTAINER}"
+LABEL piper-version="${PIPER_REPO_REF}"
+
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
 ENV DATA_DIR=/root/.piper
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="${VIRTUAL_ENV}/bin:$PATH"
-ENV MC_PORT="${MC_PORT}:-5000"
-ENV MC_MODEL="${MC_MODEL}:-en_US-lessac-medium"
-ENV MC_ADDITIONAL_CMD_ARGS="${MC_ADDITIONAL_CMD_ARGS}:-"
+ENV MC_PORT="${MC_PORT:-5000}"
+ENV MC_MODEL="${MC_MODEL:-en_US-lessac-medium}"
+ENV MC_ADDITIONAL_CMD_ARGS="${MC_ADDITIONAL_CMD_ARGS:-}"
 
 RUN apt-get update \
     && apt-get install --quiet --no-install-recommends --no-install-suggests --yes \
@@ -67,8 +70,6 @@ RUN python3 -m venv "${VIRTUAL_ENV}" \
     && python3 -m piper.download_voices --data-dir "${DATA_DIR}" "it_IT-paola-medium" \
     && python3 -m piper.download_voices --data-dir "${DATA_DIR}" "es_ES-davefx-medium"
 
-# Set docker labels
-LABEL maintainer="${MAINTAINER}"
-LABEL piper-version="${PIPER_REPO_REF}"
+EXPOSE ${MC_PORT:-5000}
 
 CMD [ "sh", "-c", "python3 -m piper.http_server -m ${MC_MODEL} --host 0.0.0.0 --port ${MC_PORT} --data-dir ${DATA_DIR} ${MC_ADDITIONAL_CMD_ARGS}" ]
