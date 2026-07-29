@@ -1,7 +1,5 @@
 # This justfile requires https://github.com/casey/just
 
-set shell := ["bash", "-c"]
-
 # Load environment variables from `.env` file.
 set dotenv-load
 # Fail the script if the env file is not found.
@@ -34,30 +32,6 @@ docker-build piper_repo_ref=env('PIPER_REPO_REF') *args='':
         --label "local" \
         --build-arg PIPER_REPO_REF={{piper_repo_ref}} \
         --tag "multicash/piper-local" .
-
-# Pull and save amd64 image as tar file
-[group("docker")]
-docker-save-amd64 tag="latest" output_file="piper-windows-amd64.tar":
-    @echo "Pulling amd64 image from GHCR..."
-    @docker pull --platform linux/amd64 {{image_name}}:{{tag}}
-    @echo "Saving amd64 image to {{output_file}}..."
-    @docker save --platform linux/amd64 -o {{output_file}} {{image_name}}:{{tag}}
-    @echo "Saved {{output_file}} successfully!"
-
-# Pull and save arm64 image as tar file
-[group("docker")]
-docker-save-arm64 tag="latest" output_file="piper-raspberry-arm64.tar":
-    @echo "Pulling arm64 image from GHCR..."
-    @docker pull --platform linux/arm64 {{image_name}}:{{tag}}
-    @echo "Saving arm64 image to {{output_file}}..."
-    @docker save --platform linux/arm64 -o {{output_file}} {{image_name}}:{{tag}}
-    @echo "Saved {{output_file}} successfully!"
-
-# Pull and save both platforms (amd64 & arm64) as tar files
-[group("docker")]
-docker-save-all tag="latest":
-    @just docker-save-amd64 {{tag}}
-    @just docker-save-arm64 {{tag}}
 
 # run shell in docker container
 [group("docker")]
