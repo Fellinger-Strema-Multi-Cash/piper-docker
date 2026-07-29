@@ -42,8 +42,7 @@ jobs:
           outputs: type=cacheonly
           cache-from: type=gha
           cache-to: type=gha
-          #platforms: linux/amd64,linux/arm64
-          platforms: linux/arm64
+          platforms: linux/amd64,linux/arm64
           push: false
           tags: Fellinger-Strema-Multi-Cash/piper
           labels: ci
