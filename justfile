@@ -35,8 +35,8 @@ docker-build piper_repo_ref=env('PIPER_REPO_REF') *args='':
 
 # run container
 [group("docker")]
-docker-run:
-    @docker run --rm --publish 5000:5000 multicash/piper-local 
+docker-run port="5000":
+    @docker run --rm --publish {{port}}:{{port}} --env MC_PORT={{port}} multicash/piper-local
 
 # run shell in docker container
 [group("docker")]
