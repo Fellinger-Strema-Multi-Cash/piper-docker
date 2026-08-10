@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     environment:
       MC_PORT: 15000
-      MC_MODEL: "en_GB-cori-high"
+      MC_MODEL: "en_US-lessac-medium"
       MC_ADDITIONAL_CMD_ARGS: '--sentence-silence 1.0 --length-scale 1.0 --noise-scale 0.8 --debug'
     ports:
       - "5000:15000"

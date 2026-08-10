@@ -68,10 +68,6 @@ test-speech voice="en_US-lessac-medium" text="This is a test.":
 test-speech-en_US text="This is a test.":
     @just test-speech en_US-lessac-medium "{{ text }}"
 
-# text to speech test in English (GB)
-[group("development")]
-test-speech-en_GB text="This is a test.":
-    @just test-speech en_GB-cori-high "{{ text }}"
 
 # text to speech test in Spanish
 [group("development")]
@@ -81,7 +77,7 @@ test-speech-es_ES text="Esto es una prueba.":
 # text to speech test in German
 [group("development")]
 test-speech-de_DE text="Das ist ein Test.":
-    @just test-speech de_DE-thorsten-high "{{ text }}"
+    @just test-speech de_DE-thorsten-medium "{{ text }}"
 
 # text to speech test in Italian
 [group("development")]
