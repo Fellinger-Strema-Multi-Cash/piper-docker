@@ -65,8 +65,7 @@ RUN python3 -m venv "${VIRTUAL_ENV}" \
     # download voices
     # See: https://huggingface.co/rhasspy/piper-voices/tree/main
     && python3 -m piper.download_voices --data-dir "${DATA_DIR}" "en_US-lessac-medium" \
-    && python3 -m piper.download_voices --data-dir "${DATA_DIR}" "de_DE-thorsten-high" \
-    && python3 -m piper.download_voices --data-dir "${DATA_DIR}" "en_GB-cori-high" \
+    && python3 -m piper.download_voices --data-dir "${DATA_DIR}" "de_DE-thorsten-medium" \
     && python3 -m piper.download_voices --data-dir "${DATA_DIR}" "it_IT-paola-medium" \
     && python3 -m piper.download_voices --data-dir "${DATA_DIR}" "es_ES-davefx-medium"
 
