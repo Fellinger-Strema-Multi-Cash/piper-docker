@@ -68,7 +68,6 @@ test-speech voice="en_US-lessac-medium" text="This is a test.":
 test-speech-en_US text="This is a test.":
     @just test-speech en_US-lessac-medium "{{ text }}"
 
-
 # text to speech test in Spanish
 [group("development")]
 test-speech-es_ES text="Esto es una prueba.":
